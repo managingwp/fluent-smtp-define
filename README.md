@@ -19,7 +19,7 @@ Upon activation a file is placed into /wp-content/mu-plugins that looks for 'FLU
 * Pull in Postmark API key via GridPanes sendgrid-wp-configs.php SMTP_PASS variable
 * Support custom define so other providers can be used, which should be simple.
 * Add in support for Postmark official plugin.
- * define( ‘POSTMARK_API_KEY’, ” );
- * define( ‘POSTMARK_STREAM_NAME’, ‘stream-name’ );
- * * define( ‘POSTMARK_SENDER_ADDRESS’, ‘from@example.com’ );
+```define( ‘POSTMARK_API_KEY’, ” );
+define( ‘POSTMARK_STREAM_NAME’, ‘stream-name’ );
+define( ‘POSTMARK_SENDER_ADDRESS’, ‘from@example.com’ );```
  

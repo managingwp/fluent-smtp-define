@@ -16,3 +16,6 @@ Upon activation a file is placed into /wp-content/mu-plugins that looks for 'FLU
 
 # Todo
 * Figure out how to fully configure Fluent SMTP.
+* Pull in Postmark API key via GridPanes sendgrid-wp-configs.php SMTP_PASS variable
+* Support custom define so other providers can be used, which should be simple.
+ 

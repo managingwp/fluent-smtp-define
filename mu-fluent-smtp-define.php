@@ -13,42 +13,63 @@
  */
 
 # -- Variables
-$ff_postmark_api="";
+$ff_postmark_api=""; # Enter your postmark API.
 $gp_user_config=ABSPATH."../user-configs.php";
 
-# -- Check for gripane ROOTDIR/../user-configs.php
-if ( file_exists($gp_user_config) ) {
-    error_log("Found GridPane user-configs.php - ".$gp_user_config);
+# -- Functions
+function fcsd_remove_mu () {
+        fcsd_error("Removing ".ABSPATH."wp-content/mu-plugins/mu-fluent-smtp-define.php");
+        unlink(ABSPATH."wp-content/mu-plugins/mu-fluent-smtp-define.php");
+}
 
+function fcsd_error ($text) {
+    error_log("FCSD - ".$text);
+}
+
+function fcsd_check_postmark_define ($file) {
     $id = "FLUENTMAIL_POSTMARK_API_KEY";
-    $handle = fopen($gp_user_config, 'r');
+    $handle = fopen($file, 'r');
     $valid = false;
 
-    error_log("Checking $gp_user_config");
+    fcsd_error("Checking $file");
     while (($buffer = fgets($handle)) !== false) {
-        error_log($buffer);
+        fcsd_error($buffer);
         if (strpos($buffer, $id) !== false) {
-            error_log("matched!");
+            fcsd_error("FCSD - Matched!");
             $valid = true;
             fclose($handle);
             break; // Once you find the string, you should break out the loop.
         }
     }
-    if ( $valid == false ) {
-        error_log("Didn't find Fluent SMTP string");
-        error_log("Appended Fluent Forms Postmark API Key");
-        $handle = fopen($gp_user_config, 'a'); //opens file in append mode
-        fwrite($handle, "\ndefine( 'FLUENTMAIL_POSTMARK_API_KEY', '".$ff_postmark_api."' );");
+    return $valid;
+}
+
+function fcsd_add_postmark_define ($file, $api_key) {
+        $handle = fopen($file, 'a'); //opens file in append mode
+        fwrite($handle, "\ndefine( 'FLUENTMAIL_POSTMARK_API_KEY', '".$api_key."' );");
         fclose($handle);
-        error_log("Removing ".ABSPATH."wp-content/mu-plugins/mu-fluent-smtp-define.php");
-        unlink(ABSPATH."wp-content/mu-plugins/mu-fluent-smtp-define.php");
+}
+
+# -- Check for gripane ROOTDIR/../user-configs.php
+if ( file_exists($gp_user_config) ) {
+    fcsd_error("Found GridPane user-configs.php - ".$gp_user_config);
+
+    $valid = fcsd_check_postmark_define($gp_user_config);
+    fcsd_error("$valid =" . $valid );
+
+    if ( $valid == false ) {
+        fcsd_error("Didn't find Fluent SMTP string");
+        fcsd_error("Appended Fluent Forms Postmark API Key");
+        fcsd_add_postmark_define($gp_user_config,$ff_postmark_api);        
+        fcsd_remove_mu();
     } elseif ( $valid == true ) {
-        error_log("Found Fluent SMTP string...exiting.");
+        fcsd_error("Found Fluent SMTP string...exiting.");
+        fcsd_remove_mu();
     } else {
-        error_log("Unknown failure");
+        fcsd_error("Unknown failure");
     }
 } else {
 
-error_log("Couldn't find GridPane user-configs.php - ".$gp_user_config);
+fcsd_error("Couldn't find GridPane user-configs.php - ".$gp_user_config);
 
 }

@@ -13,6 +13,12 @@
  */
  
 function fcsd_plugin_activated () {
-    error_log("Fluent Custom SMTP Define");
+    $source = plugin_dir_path( __FILE__ )."mu-fluent-smtp-define.php";
+    $destination = ABSPATH."wp-content/mu-plugins/mu-fluent-smtp-define.php";
+    if( !copy($source, $destination) ) { 
+        error_log("File can't be copied!"); 
+    } else { 
+        error_log("File has been copied!"); 
+    }
 }
 register_activation_hook(__FILE__,'fcsd_plugin_activated');

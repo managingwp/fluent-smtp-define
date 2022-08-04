@@ -15,5 +15,4 @@
 function fcsd_plugin_activated () {
     error_log("Fluent Custom SMTP Define");
 }
-
-register_activation_hook(__FILE__,'plugin_activated');
+register_activation_hook(__FILE__,'fcsd_plugin_activated');

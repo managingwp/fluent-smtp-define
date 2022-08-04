@@ -11,3 +11,9 @@
  * License URI:      http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:      fluent-smtp-define
  */
+ 
+function fcsd_plugin_activated () {
+    error_log("Fluent Custom SMTP Define");
+}
+
+register_activation_hook(__FILE__,'plugin_activated');
